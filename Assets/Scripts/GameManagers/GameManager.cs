@@ -26,8 +26,8 @@ public class GameManager : MonoBehaviour
         {
             case GameScenes.MainMenu:
                 MainMenu();
-                Player.GetComponent<SpriteRenderer>().enabled = false;
-                Player.GetComponent<CharacterController>().enabled = false;
+                //Player.GetComponent<SpriteRenderer>().enabled = false;
+                //Player.GetComponent<CharacterController>().enabled = false;
                 break;
             case GameScenes.PauseMenu:
                 Pause();
@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1.0f;
         uiManager.GamePlay();
         Player.GetComponent<CharacterController>().enabled = true;
-        Player.GetComponent<SpriteRenderer>().enabled = true;
+        //Player.GetComponent<SpriteRenderer>().enabled = true;
     }
     public void Options()
     {
