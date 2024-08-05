@@ -15,4 +15,11 @@ public class NetTrigger : MonoBehaviour
     {
         
     }
+    public void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag == "Puck")
+        {
+            Debug.Log("Score!");
+        }
+    }
 }

@@ -18,6 +18,8 @@ public class PlayerMovementController : MonoBehaviour
     public bool IsPaused;
     Vector3 velocity;
     public GameObject PauseMenu;
+    //Get the puck script
+    PuckBehaviour puck;
     // Update is called once per frame
     void Start()
     {
@@ -29,6 +31,7 @@ public class PlayerMovementController : MonoBehaviour
     }
     void Update()
     {
+        puck = GameObject.Find("Puck").GetComponent<PuckBehaviour>();
         //Movement
         IsGrounded = Physics.CheckSphere(groundCheck.position,groundDist,GroundMask);
 
@@ -71,6 +74,10 @@ public class PlayerMovementController : MonoBehaviour
             Time.timeScale = 1.0f;
             Cursor.lockState = CursorLockMode.Locked;
             PauseMenu.SetActive(false);
+        }
+        else if(Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            puck.ApplyForce(transform.forward);
         }
         //Kill box
         else if(velocity.y <= -15)

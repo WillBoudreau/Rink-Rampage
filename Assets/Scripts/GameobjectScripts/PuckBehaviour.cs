@@ -4,34 +4,45 @@ using UnityEngine;
 
 public class PuckBehaviour : MonoBehaviour
 {
-    public Rigidbody rb;
-    public Vector3 StartPOS;  
-    public GameObject Player;  
-    public Vector3 velocity;
-    // Get the player's forward direction
-    public Vector3 playerForward;
+   
+    public float friction = 0.98f;    
+    public float maxSpeed = 10f;        
+    public float forceMultiplier = 10f; 
 
-    // Start is called before the first frame update
+    private Rigidbody rb;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        StartPOS = transform.position;
-        Player = GameObject.Find("Player");
-        playerForward = Player.transform.forward;
+        if (rb == null)
+        {
+            rb = gameObject.AddComponent<Rigidbody>();
+        }
+        rb.useGravity = false; 
+        rb.drag = 0f;          
+        rb.angularDrag = 0.5f;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(velocity.y <= -15)
-        {   
-            transform.position = StartPOS;
-        }
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (rb.velocity.magnitude > 0)
         {
-            // Add force in the player's forward direction
-            Debug.Log("Player Hit");
-            rb.AddForce(playerForward * 10, ForceMode.Impulse);
+            rb.velocity *= friction;
         }
+        if (rb.velocity.magnitude > maxSpeed)
+        {
+            rb.velocity = rb.velocity.normalized * maxSpeed;
+        }
+    }
+
+    public void ApplyForce(Vector3 direction)
+    {
+        rb.AddForce(direction * forceMultiplier, ForceMode.Impulse);
+    }
+    public void ResetPuck(Vector3 startPosition)
+    {
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        transform.position = startPosition;
     }
 }
