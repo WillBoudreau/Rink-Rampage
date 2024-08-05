@@ -14,8 +14,8 @@ public class PlayerMovementController : MonoBehaviour
     public Vector3 StartPOS;
     public float groundDist = 0.4f;
     public LayerMask GroundMask;
-    bool IsGrounded;
-    bool IsPaused;
+    public bool IsGrounded;
+    public bool IsPaused;
     Vector3 velocity;
     public GameObject PauseMenu;
     // Update is called once per frame
@@ -37,8 +37,8 @@ public class PlayerMovementController : MonoBehaviour
             velocity.y = -2.0f;
         }
 
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+        float x = Input.GetAxisRaw("Horizontal");
+        float z = Input.GetAxisRaw("Vertical");
 
         Vector3 move = transform.right * x + transform.forward * z;
 
