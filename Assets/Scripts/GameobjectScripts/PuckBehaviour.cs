@@ -8,11 +8,12 @@ public class PuckBehaviour : MonoBehaviour
     public float friction = 0.98f;    
     public float maxSpeed = 10f;        
     public float forceMultiplier = 10f; 
-
+    public Vector3 startPosition;
     private Rigidbody rb;
 
     void Start()
     {
+        startPosition = transform.position;
         rb = GetComponent<Rigidbody>();
         if (rb == null)
         {
@@ -39,7 +40,7 @@ public class PuckBehaviour : MonoBehaviour
     {
         rb.AddForce(direction * forceMultiplier, ForceMode.Impulse);
     }
-    public void ResetPuck(Vector3 startPosition)
+    public void ResetPuck()
     {
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
