@@ -7,7 +7,7 @@ public class PuckBehaviour : MonoBehaviour
    
     public float friction = 0.98f;    
     public float maxSpeed = 10f;        
-    public float forceMultiplier = 10f; 
+    public float forceMultiplier = 2f; 
     public Vector3 startPosition;
     private Rigidbody rb;
 
@@ -33,6 +33,10 @@ public class PuckBehaviour : MonoBehaviour
         if (rb.velocity.magnitude > maxSpeed)
         {
             rb.velocity = rb.velocity.normalized * maxSpeed;
+        }
+        if (transform.position.y < -10)
+        {
+            ResetPuck();
         }
     }
 

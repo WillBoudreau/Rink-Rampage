@@ -11,6 +11,8 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField]  private CharacterController CharacterCont;
     [SerializeField]  private Transform groundCheck;
     [SerializeField]  private int health = 100;
+
+    private float MinDistPuck = 2f;
     public Vector3 StartPOS;
     public float groundDist = 0.4f;
     public LayerMask GroundMask;
@@ -75,9 +77,13 @@ public class PlayerMovementController : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             PauseMenu.SetActive(false);
         }
-        else if(Input.GetKeyDown(KeyCode.Mouse0))
+        //Shoot
+        else if(Vector3.Distance(transform.position, puck.transform.position) < MinDistPuck)
         {
-            puck.ApplyForce(transform.forward);
+            if(Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                puck.ApplyForce(transform.forward);
+            }
         }
         //Kill box
         else if(velocity.y <= -15)

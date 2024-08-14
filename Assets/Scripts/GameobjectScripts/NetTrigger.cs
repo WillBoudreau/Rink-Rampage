@@ -35,9 +35,9 @@ public class NetTrigger : MonoBehaviour
         }
         else if (other.gameObject.tag == "Puck" && this.gameObject.tag == "AwayNet")
         {
+            puck.ResetPuck();
             ScoreSound.Play();
             homeScore++;
-            puck.ResetPuck();
             scoreTextHome.text = "Home: " + homeScore.ToString();
             Debug.Log(homeScore);
         }
