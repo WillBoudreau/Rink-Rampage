@@ -34,10 +34,6 @@ public class PuckBehaviour : MonoBehaviour
         {
             rb.velocity = rb.velocity.normalized * maxSpeed;
         }
-        if (transform.position.y < -10)
-        {
-            ResetPuck();
-        }
     }
 
     public void ApplyForce(Vector3 direction)
