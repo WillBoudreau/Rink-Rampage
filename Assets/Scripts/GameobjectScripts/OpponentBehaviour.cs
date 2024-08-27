@@ -2,20 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OpponentBehaviour : MonoBehaviour
+public class OpponentBehaviour : MoveableSettings
 {
     public enum State
     {
         Idle,
         Chasing,
         Shooting,
-        Check
+        Check,
     }
     public GameObject puck;
     public float ShotTimer = 1f;
     public bool IsShooting;
-    public float movementSpeed = 5f;
-    float MinDistPuck = 3f;
     private State currentState;
     public Rigidbody rb;    
     PuckBehaviour puckScript;
@@ -40,11 +38,11 @@ public class OpponentBehaviour : MonoBehaviour
             case State.Idle:
                 //Check if the puck is close enough to start chasing
                 Debug.Log("Idle");
-                if(Vector3.Distance(transform.position, puck.transform.position) > MinDistPuck)
+                if(Vector3.Distance(transform.position, puck.transform.position) > AIMinDistPuck)
                 {
                     currentState = State.Chasing;
                 }
-                else if(Vector3.Distance(transform.position, puck.transform.position) < MinDistPuck)
+                else if(Vector3.Distance(transform.position, puck.transform.position) < AIMinDistPuck)
                 {
                     currentState = State.Shooting;
                 }
@@ -57,8 +55,8 @@ public class OpponentBehaviour : MonoBehaviour
                 //Chase the puck
                 Debug.Log("Chasing");
                 transform.LookAt(puck.transform);
-                transform.position += transform.forward * movementSpeed * Time.deltaTime;
-                if(Vector3.Distance(transform.position, puck.transform.position) < MinDistPuck)
+                transform.position += transform.forward * AISpeed * Time.deltaTime;
+                if(Vector3.Distance(transform.position, puck.transform.position) < AIMinDistPuck)
                 {
                     currentState = State.Shooting;
                 }
@@ -93,6 +91,8 @@ public class OpponentBehaviour : MonoBehaviour
             case State.Check:
                 // Push the player away from the puck
                 Debug.Log("Check");
+
+                break;
         }
 
     }

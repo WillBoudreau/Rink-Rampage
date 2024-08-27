@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class PlayerMovementController : MonoBehaviour
+public class PlayerMovementController : MoveableSettings
 {
     [Header("Player Values")]
-    [SerializeField]  private float speed = 12f;
-    [SerializeField]  private float gravity = -9.81f;
     [SerializeField]  private CharacterController CharacterCont;
     [SerializeField]  private Transform groundCheck;
     [SerializeField]  private int health = 100;
 
-    private float MinDistPuck = 2f;
     public Vector3 StartPOS;
     public float groundDist = 0.4f;
     public LayerMask GroundMask;
@@ -47,11 +44,11 @@ public class PlayerMovementController : MonoBehaviour
 
         Vector3 move = transform.right * x + transform.forward * z;
 
-        CharacterCont.Move(move * Time.deltaTime * speed);
+        CharacterCont.Move(move * Time.deltaTime * PlayerSpeed);
         
-        velocity.y += gravity * Time.deltaTime;
+        velocity.y += PlayerGravity * Time.deltaTime;
 
-        CharacterCont.Move(velocity * Time.deltaTime * speed);
+        CharacterCont.Move(velocity * Time.deltaTime * PlayerSpeed);
 
         //Keybinds
         //Pause
@@ -78,7 +75,7 @@ public class PlayerMovementController : MonoBehaviour
             PauseMenu.SetActive(false);
         }
         //Shoot
-        else if(Vector3.Distance(transform.position, puck.transform.position) < MinDistPuck)
+        else if(Vector3.Distance(transform.position, puck.transform.position) < PlayerMinDistPuck)
         {
             if(Input.GetKeyDown(KeyCode.Mouse0))
             {
