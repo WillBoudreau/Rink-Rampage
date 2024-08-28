@@ -29,14 +29,32 @@ public class OpponentBehaviour : MoveableSettings
     // Update is called once per frame
     void Update()
     {
-        ChangeState();
+        Move();
     }
-    void ChangeState()//Change the state of the AI
+    public override void Move()//Change the state of the AI
     {
         switch(currentState)
         {
             case State.Idle:
-                //Check if the puck is close enough to start chasing
+                Idle();
+                break;
+            case State.Chasing:
+                Chasing();
+                break;
+            case State.Shooting:
+                Shoot();
+                break;
+            case State.Check:
+                // Push the player away from the puck
+                Debug.Log("Check");
+
+                break;
+        }
+
+    }
+    void Idle()
+    {
+         //Check if the puck is close enough to start chasing
                 Debug.Log("Idle");
                 if(Vector3.Distance(transform.position, puck.transform.position) > AIMinDistPuck)
                 {
@@ -50,9 +68,10 @@ public class OpponentBehaviour : MoveableSettings
                 {
                     transform.LookAt(puck.transform);
                 }
-                break;
-            case State.Chasing:
-                //Chase the puck
+    }
+    void Chasing()
+    {
+         //Chase the puck
                 Debug.Log("Chasing");
                 transform.LookAt(puck.transform);
                 transform.position += transform.forward * AISpeed * Time.deltaTime;
@@ -60,40 +79,37 @@ public class OpponentBehaviour : MoveableSettings
                 {
                     currentState = State.Shooting;
                 }
-                break;
-            case State.Shooting:
-                //Shoot the puck
+    }
+    public override void Shoot()
+    {
+        //Shoot the puck
                 Debug.Log("Shooting");
-                puckScript.ApplyForce(transform.forward);
-                currentState = State.Idle;
-                // if(!IsShooting)
-                // {
-                //     ShotTimer = 1f;
-                //     IsShooting = true;
-                // }
-                // ShotTimer -= Time.deltaTime * 100;
-                // Debug.Log(ShotTimer);
-                // if(ShotTimer <= 0)
-                // {
-                //     Debug.Log("Shot");
-                //     if(Vector3.Distance(transform.position, puck.transform.position) < MinDistPuck)
-                //     {
-                //         puckScript.ApplyForce(transform.forward);
-                //     }
-                //     else
-                //     {
-                //         currentState = State.Idle;
-                //     }
-                // }
-                // IsShooting = false;
-                // ShotTimer = 1f;
-                break;
-            case State.Check:
-                // Push the player away from the puck
-                Debug.Log("Check");
-
-                break;
-        }
-
+                //puckScript.ApplyForce(transform.forward);
+                //currentState = State.Idle;
+                if(!IsShooting)
+                {
+                    ShotTimer = 1f;
+                    IsShooting = true;
+                }
+                ShotTimer -= Time.deltaTime * 100;
+                Debug.Log(ShotTimer);
+                if(ShotTimer <= 0)
+                {
+                    Debug.Log("Shot");
+                    if(Vector3.Distance(transform.position, puck.transform.position) < AIMinDistPuck)
+                    {
+                        puckScript.ApplyForce(transform.forward);
+                    }
+                    else
+                    {
+                        currentState = State.Idle;
+                    }
+                }
+                IsShooting = false;
+                ShotTimer = 1f;
+    }
+    public override void Check()
+    {
+        
     }
 }

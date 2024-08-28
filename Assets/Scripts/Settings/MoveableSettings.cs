@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveableSettings : MasterSettings
+public abstract class MoveableSettings : MasterSettings
 {
     //Player and AI values
     //Player
@@ -27,4 +27,7 @@ public class MoveableSettings : MasterSettings
     {
         
     }
+    public abstract void Move();
+    public abstract void Shoot();
+    public abstract void Check();
 }

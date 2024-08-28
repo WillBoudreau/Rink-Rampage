@@ -8,8 +8,6 @@ public class PlayerMovementController : MoveableSettings
     [Header("Player Values")]
     [SerializeField]  private CharacterController CharacterCont;
     [SerializeField]  private Transform groundCheck;
-    [SerializeField]  private int health = 100;
-
     public Vector3 StartPOS;
     public float groundDist = 0.4f;
     public LayerMask GroundMask;
@@ -31,7 +29,12 @@ public class PlayerMovementController : MoveableSettings
     void Update()
     {
         puck = GameObject.Find("Puck").GetComponent<PuckBehaviour>();
-        //Movement
+        Move();
+        Shoot();
+    }
+    public override void Move()
+    {
+         //Movement
         IsGrounded = Physics.CheckSphere(groundCheck.position,groundDist,GroundMask);
 
         if(IsGrounded && velocity.y < 0)
@@ -49,8 +52,14 @@ public class PlayerMovementController : MoveableSettings
         velocity.y += PlayerGravity * Time.deltaTime;
 
         CharacterCont.Move(velocity * Time.deltaTime * PlayerSpeed);
-
-        //Keybinds
+        //Kill box
+        if(velocity.y <= -15)
+        {   
+            transform.position = StartPOS;
+        }
+    }
+    public void Pause()
+    {
         //Pause
        if(Input.GetKeyDown(KeyCode.Escape))
         {
@@ -74,18 +83,19 @@ public class PlayerMovementController : MoveableSettings
             Cursor.lockState = CursorLockMode.Locked;
             PauseMenu.SetActive(false);
         }
-        //Shoot
-        else if(Vector3.Distance(transform.position, puck.transform.position) < PlayerMinDistPuck)
+    }
+    public override void Check()
+    {
+      
+    }
+    public override void Shoot()
+    {
+        if(Vector3.Distance(transform.position, puck.transform.position) < PlayerMinDistPuck)
         {
             if(Input.GetKeyDown(KeyCode.Mouse0))
             {
                 puck.ApplyForce(transform.forward);
             }
-        }
-        //Kill box
-        else if(velocity.y <= -15)
-        {   
-            transform.position = StartPOS;
         }
     }
 }
